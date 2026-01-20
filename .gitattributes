@@ -1,0 +1,9 @@
+CMakeLists.txt linguist-generated
+package.xml linguist-generated
+*.cmake linguist-generated
+*.xml linguist-generated
+*.launch linguist-generated
+*.world linguist-generated
+
+
+*.py linguist-language=Python
