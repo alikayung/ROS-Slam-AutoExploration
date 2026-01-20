@@ -50,8 +50,10 @@ catkin_ws2/                   # ROS 工作空间根目录
 ## 使用指南
 （1）环境配置与编译
 打开终端，进入工作空间目录catkin_ws2，编译项目：
-``` cd ~/catkin_ws2 ```
+```bash
+cd ~/catkin_ws2 
 catkin_make
+```
 刷新环境变量
 source devel/setup.bash
 为 Python 自主探索脚本赋予可执行权限
