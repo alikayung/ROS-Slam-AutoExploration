@@ -53,8 +53,29 @@ catkin_ws2/                       # ROS 工作空间根目录
     └── turtlebot3_navigation/    # [本设计调参后的依赖包] 导航参数配置 (costmap, planner)
 ```
 
-## 使用指南
-（1）环境配置与编译
+# 使用指南
+## 环境依赖 (Prerequisites)
+本项目基于 **Ubuntu 20.04** 和 **ROS Noetic** 开发。在运行代码前，请确保安装了以下依赖库。
+### 1. 基础环境
+* **OS**: Ubuntu 20.04 LTS
+* **ROS**: Noetic Ninjemys
+* **Python**: 3.8+
+
+### 2. 安装 ROS 功能包
+请打开终端，执行以下命令安装 TurtleBot3 仿真、导航和建图所需的官方依赖包：
+
+```bash
+sudo apt-get update
+sudo apt-get install ros-noetic-turtlebot3 \
+                     ros-noetic-turtlebot3-msgs \
+                     ros-noetic-turtlebot3-simulations \
+                     ros-noetic-navigation \
+                     ros-noetic-gmapping \
+                     ros-noetic-map-server \
+                     ros-noetic-move-base \
+                     ros-noetic-dwa-local-planner 
+## 运行项目
+### （1）环境配置与编译
 打开终端，进入工作空间目录catkin_ws2，编译项目：
 ```bash
 cd ~/catkin_ws2 
