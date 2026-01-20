@@ -17,9 +17,12 @@
 5. 可视化监控：提供完整的 RViz 配置，实时显示雷达扫描、规划路径、地图与目标点 。
 
 ## 开发环境
- 操作系统: Ubuntu 20.04 LTS 
+ 操作系统: Ubuntu 20.04 LTS
+ 
  ROS 版本: ROS Noetic Ninjemys 
+
  仿真平台: Gazebo 11 
+ 
  编程语言: Python 3, XML (Launch) 
 
 ## 文件结构
@@ -104,9 +107,11 @@ roslaunch my_project run_nav.launch
 目标容差: 在 dwa_local_planner_params_burger.yaml 中，xy_goal_tolerance 设置为 0.2 米，以提高到达判定成功率 。 
 
 ## 开发者信息
-作者: 梁雅天 
+作者: Alikayu 
 
 单位: 大连海事大学 船舶电气工程学院 自动化专业 
+
+联系方式：liangyt0111@163.com
 
 日期: 2026年1月
 
