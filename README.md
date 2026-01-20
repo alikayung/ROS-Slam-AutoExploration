@@ -1,68 +1,77 @@
-# ROS-Slam-AutoExploration
+[中文指南](./README_CN.md) | [English Guide](./README.md)
+# ROS-SLAM-AutoExploration
+
 ## A ROS-based robot project for autonomous exploration and SLAM mapping.
-## 基于ROS的机器人自主探索与建图项目
-项目运用现有机器人平台TurtleBot3 Burger，在Gazebo仿真环境中，构建机器人基于前沿点的自主探索建图的算法，使机器人自主地探索完成整个world地形，构建出完整正确的地图，通过RViz可视化窗口显示机器人探索建图过程和效果。完成地图构建后，利用此地图，实现机器人去往图中任意位置的定点导航，并以此验证建图的准确性。
 
-## 项目简介
-本项目旨在解决移动机器人在未知环境下的自主感知与建图问题。系统核心包含三大功能模块：
-1. 使用Gmapping SLAM实时构建 2D 栅格地图。
-2. 基于 Python 编写的决策节点，利用 make_plan 服务进行路径预校验，配合黑名单机制与防卡死策略，实现了高效、鲁棒的自主探索。
-3. 定点导航：利用 AMCL 定位与 Move_base 导航栈（DWA算法），实现避障与最优路径规划。
+This project utilizes the **TurtleBot3 Burger** robot platform within the **Gazebo** simulation environment to implement an autonomous exploration and mapping algorithm based on **frontier detection**. The robot autonomously explores the entire terrain, constructs a complete and accurate 2D map, and visualizes the process in real-time via **RViz**. Upon completion, the generated map is verified through fixed-point navigation tasks.
 
-## 主要功能
-1. 自主探索：机器人自动识别地图边界（Frontier），规划路径探索未知区域 。
-2. 智能避障：集成 move_base，利用代价地图（Costmap）处理静态障碍物与膨胀层 。
-3. 路径预校验：在导航前调用全局规划器预演路径，自动修正不可达目标点，防止机器人卡死在墙内 。
-4. 异常恢复：具备超时检测机制，当机器人陷入死角时自动触发原地旋转恢复行为 。
-5. 可视化监控：提供完整的 RViz 配置，实时显示雷达扫描、规划路径、地图与目标点 。
+## Project Overview
 
-## 开发环境
- 操作系统: Ubuntu 20.04 LTS
- 
- ROS 版本: ROS Noetic Ninjemys 
+This project aims to solve the problem of autonomous perception and mapping for mobile robots in unknown environments. The system consists of three core functional modules:
 
- 仿真平台: Gazebo 11 
- 
- 编程语言: Python 3, XML (Launch) 
+1. **SLAM Mapping**: Real-time construction of 2D grid maps using **Gmapping**.
+2. **Autonomous Decision Making**: A Python-based decision node that uses the `make_plan` service for path pre-validation, combined with a "blacklist" mechanism and anti-stuck strategies to ensure efficient and robust exploration.
+3. **Fixed-point Navigation**: Utilizes **AMCL** for localization and the **Move_base** navigation stack (DWA algorithm) for obstacle avoidance and optimal path planning.
 
-## 文件结构
+## Key Features
+
+1. **Autonomous Exploration**: Automatically identifies map **Frontiers** and plans paths to explore unknown areas.
+2. **Intelligent Obstacle Avoidance**: Integrated with `move_base`, utilizing **Costmaps** to handle static obstacles and inflation layers.
+3. **Path Pre-validation**: Invokes the global planner before navigation to pre-validate paths, automatically correcting unreachable goals to prevent the robot from getting stuck near walls.
+4. **Exception Recovery**: Features a timeout detection mechanism that triggers in-place rotation recovery behaviors when the robot is trapped in a dead corner.
+5. **Visual Monitoring**: Provides complete **RViz** configuration for real-time display of LiDAR scans, planned paths, maps, and goals.
+
+## Development Environment
+
+* **OS**: Ubuntu 20.04 LTS
+* **ROS Version**: ROS Noetic Ninjemys
+* **Simulation**: Gazebo 11
+* **Languages**: Python 3, XML (Launch)
+
+## File Structure
 
 ```text
-catkin_ws2/                       # ROS 工作空间根目录
-├── build/                        # 编译生成文件
-├── devel/                        # 开发环境配置与目标文件
-└── src/                          # 源代码目录
-    ├── CMakeLists.txt            # 顶层 CMake 文件
+catkin_ws2/                       # ROS Workspace Root
+├── build/                        # Build files
+├── devel/                        # Development setup & object files
+└── src/                          # Source code
+    ├── CMakeLists.txt            # Top-level CMake file
     │
-    ├── my_project/               # 主程序文件夹
-    │   ├── launch/               # 启动脚本文件夹
-    │   │   ├── run_my_project.launch   # 启动仿真、导航和探索节点的脚本
-    │   │   └── run_nav.launch          # 根据地图启动定点导航的脚本
-    │   ├── maps/                 # 地图存储文件夹
-    │   │   ├── map1.pgm          # 探索完成后保存的地图图片
-    │   │   └── map1.yaml         # 地图的配置文件
-    │   ├── src/                  # 源代码文件夹
-    │   │   └── robot_control.py  # 自主探索逻辑 Python 脚本
-    │   ├── rviz/                 # 可视化配置文件夹
-    │   │   └── my_rviz.rviz      # 预设的 RViz 视图配置
-    │   ├── worlds/               # 仿真环境文件夹
-    │   │   └── world4.world      # Gazebo 物理仿真环境文件
-    │   ├── CMakeLists.txt        # 编译规则文件
-    │   └── package.xml           # 依赖描述文件
+    ├── my_project/               # Main Project Package
+    │   ├── launch/               # Launch scripts folder
+    │   │   ├── run_my_project.launch   # Scripts to launch simulation, nav, and exploration
+    │   │   └── run_nav.launch          # Scripts for fixed-point navigation based on saved maps
+    │   ├── maps/                 # Map storage folder
+    │   │   ├── map1.pgm          # Saved map image after exploration
+    │   │   └── map1.yaml         # Map configuration file
+    │   ├── src/                  # Source code folder
+    │   │   └── robot_control.py  # Autonomous exploration logic script (Python)
+    │   ├── rviz/                 # Visualization configuration
+    │   │   └── my_rviz.rviz      # Preset RViz view configuration
+    │   ├── worlds/               # Simulation environment folder
+    │   │   └── world4.world      # Gazebo physics world file
+    │   ├── CMakeLists.txt        # Build rules
+    │   └── package.xml           # Dependency description
     │
-    └── turtlebot3_navigation/    # [本设计调参后的依赖包] 导航参数配置 (costmap, planner)
+    └── turtlebot3_navigation/    # [Tuned Dependency] Navigation params (costmap, planner)
+
 ```
 
-# 使用指南
-## 环境依赖 (Prerequisites)
-本项目基于 **Ubuntu 20.04** 和 **ROS Noetic** 开发。在运行代码前，请确保安装了以下依赖库。
-### 1. 基础环境
+# Usage Guide
+
+## Prerequisites
+
+This project is developed based on **Ubuntu 20.04** and **ROS Noetic**. Before running the code, please ensure the following dependencies are installed.
+
+### 1. Basic Environment
+
 * **OS**: Ubuntu 20.04 LTS
 * **ROS**: Noetic Ninjemys
 * **Python**: 3.8+
 
-### 2. 安装 ROS 功能包
-请打开终端，执行以下命令安装 TurtleBot3 仿真、导航和建图所需的官方依赖包：
+### 2. Install ROS Packages
+
+Open a terminal and execute the following command to install the official dependencies required for TurtleBot3 simulation, navigation, and mapping:
 
 ```bash
 sudo apt-get update
@@ -74,67 +83,100 @@ sudo apt-get install ros-noetic-turtlebot3 \
                      ros-noetic-map-server \
                      ros-noetic-move-base \
                      ros-noetic-dwa-local-planner
+
 ```
-## 运行项目
-### （1）环境配置与编译
-打开终端，进入工作空间目录catkin_ws2，编译项目：
+
+## Running the Project
+
+### (1) Setup & Compile
+
+Open a terminal, navigate to the workspace directory `catkin_ws2`, and compile the project:
+
 ```bash
-cd ~/catkin_ws2 
+cd ~/catkin_ws2
 catkin_make
+
 ```
-刷新环境变量
+
+Source the environment variables:
+
 ```bash
 source devel/setup.bash
+
 ```
-为 Python 自主探索脚本赋予可执行权限
+
+Grant execution permission to the Python exploration script:
+
 ```bash
 chmod +x src/my_project/src/robot_control.py
+
 ```
-### （2）启动仿真环境与导航系统
-在终端中执行启动命令：
+
+### (2) Launch Simulation & Navigation
+
+Execute the launch command in the terminal:
+
 ```bash
 roslaunch my_project run_my_project.launch
-```
-若运行正常，可发现gazebo仿真窗口打开，机器人与世界模型出现，RViz可视化窗口打开，显示出在原点处实时识别出的地图和雷达扫描线等。
 
-### （3）运行自主探索控制脚本
-打开新的终端，加载环境变量：
+```
+
+> **Note:** If running correctly, the **Gazebo** simulation window will open showing the robot and the world model. The **RViz** visualization window will also open, displaying the real-time map and LiDAR scans starting from the origin.
+
+### (3) Run Autonomous Exploration Script
+
+Open a **new terminal** and load the environment variables:
+
 ```bash
 source devel/setup.bash
+
 ```
-运行脚本：
+
+Run the script:
+
 ```bash
 python3 ~/catkin_ws2/src/my_project/src/robot_control.py
-```
-若运行正常，可发现机器人开始在地形中自主探索，RViz窗口中显示出绿色圆形目标点和机器人红色轨迹，直至探索完成。
 
-### （4）保存地图
-探索完成后，打开新终端，保存探索出的地图在maps文件夹中：（这里命名为my_map1）
+```
+
+> **Note:** If running correctly, the robot will start exploring the terrain autonomously. In RViz, you will see a **green circular goal point** and the robot's **red trajectory** until exploration is complete.
+
+### (4) Save the Map
+
+Once exploration is finished, open a **new terminal** to save the generated map into the `maps` folder (naming it `my_map1`):
+
 ```bash
 rosrun map_server map_saver -f ~/catkin_ws2/src/my_project/maps/my_map1
+
 ```
 
-### （5）根据地图实现定点导航
-关掉运行的终端，打开新终端，启动定点导航的launch文件。
+### (5) Navigation with Saved Map
+
+Close the terminals from the previous steps. Open a **new terminal** and launch the fixed-point navigation file:
+
 ```bash
 roslaunch my_project run_nav.launch
+
 ```
-若运行正常，可看到gazebo窗口和RViz窗口打开，RViz窗口中显示的是探索完成的地图。 
-选中RViz窗口中的2D Pose Estimate，根据gazebo中机器人的位姿校正位置。 
-选中RViz窗口中的2D Nav Goal，选定目标点和方向，机器人会自动导航到目标点。 
 
-## 参数配置
-膨胀半径 (Inflation Radius): 在 costmap_common_params_burger.yaml 中，为了适应狭窄地形，膨胀半径已优化为 0.15 。 
+**Instructions:**
 
-目标容差: 在 dwa_local_planner_params_burger.yaml 中，xy_goal_tolerance 设置为 0.2 米，以提高到达判定成功率 。 
+1. If running correctly, Gazebo and RViz windows will open. RViz will display the map you just saved.
+2. Select **2D Pose Estimate** in RViz to calibrate the robot's position based on its actual pose in Gazebo.
+3. Select **2D Nav Goal** in RViz, set a target position and orientation. The robot will automatically navigate to the target.
 
-## 开发者信息
-作者: Alikayu 
+## Parameter Configuration
 
-单位: 大连海事大学 船舶电气工程学院 自动化专业 
+* **Inflation Radius**: Adjusted to **0.15** in `costmap_common_params_burger.yaml` to adapt to narrow terrains.
+* **Goal Tolerance**: `xy_goal_tolerance` is set to **0.2 meters** in `dwa_local_planner_params_burger.yaml` to improve the success rate of goal verification.
 
-联系方式：liangyt0111@163.com
+## Developer Info
 
-日期: 2026年1月
+* **Author**: Alikayu
+* **Affiliation**: Dalian Maritime University, College of Marine Electrical Engineering, Automation Major
+* **Contact**: liangyt0111@163.com
+* **Date**: January 2026
 
-## 本项目为个人练习项目，欢迎提出意见和建议。未经允许严禁用于商业用途，如有疑问请联系作者
+## Disclaimer
+
+This project is for personal practice and learning purposes. Feedback and suggestions are welcome. Commercial use is strictly prohibited without permission. For any questions, please contact the author.
