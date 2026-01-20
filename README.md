@@ -73,7 +73,8 @@ sudo apt-get install ros-noetic-turtlebot3 \
                      ros-noetic-gmapping \
                      ros-noetic-map-server \
                      ros-noetic-move-base \
-                     ros-noetic-dwa-local-planner 
+                     ros-noetic-dwa-local-planner
+```
 ## 运行项目
 ### （1）环境配置与编译
 打开终端，进入工作空间目录catkin_ws2，编译项目：
@@ -89,14 +90,14 @@ source devel/setup.bash
 ```bash
 chmod +x src/my_project/src/robot_control.py
 ```
-（2）启动仿真环境与导航系统
+### （2）启动仿真环境与导航系统
 在终端中执行启动命令：
 ```bash
 roslaunch my_project run_my_project.launch
 ```
 若运行正常，可发现gazebo仿真窗口打开，机器人与世界模型出现，RViz可视化窗口打开，显示出在原点处实时识别出的地图和雷达扫描线等。
 
-（3）运行自主探索控制脚本
+### （3）运行自主探索控制脚本
 打开新的终端，加载环境变量：
 ```bash
 source devel/setup.bash
@@ -107,13 +108,13 @@ python3 ~/catkin_ws2/src/my_project/src/robot_control.py
 ```
 若运行正常，可发现机器人开始在地形中自主探索，RViz窗口中显示出绿色圆形目标点和机器人红色轨迹，直至探索完成。
 
-（4）保存地图
+### （4）保存地图
 探索完成后，打开新终端，保存探索出的地图在maps文件夹中：（这里命名为my_map1）
 ```bash
 rosrun map_server map_saver -f ~/catkin_ws2/src/my_project/maps/my_map1
 ```
 
-（5）根据地图实现定点导航
+### （5）根据地图实现定点导航
 关掉运行的终端，打开新终端，启动定点导航的launch文件。
 ```bash
 roslaunch my_project run_nav.launch
